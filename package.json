@@ -3,6 +3,13 @@
 	"displayName": "lams-patch",
 	"description": "make patch from git history for maven web project",
 	"version": "0.0.1",
+	"icon": "",
+	"author": {
+		"name": "郑瑞召",
+		"email": "ruizhaozheng@aliyun.com",
+		"url": "http://konanzheng.gitee.io/",
+		"organization": "konanzheng"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://gitee.com/konanzheng/lams-patch-vscode_plugin.git"
