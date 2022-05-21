@@ -3,6 +3,7 @@
 	"displayName": "lams-patch",
 	"description": "make patch from git history for maven web project",
 	"version": "0.0.1",
+	"publisher": "ruizhaozheng",
 	"icon": "",
 	"author": {
 		"name": "郑瑞召",
