@@ -12,7 +12,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://gitee.com/konanzheng/lams-patch-vscode_plugin.git"
+		"url": "https://github.com/konanzheng/lams-patch-vscode-plugin"
 	},
 	"engines": {
 		"vscode": "^1.67.0"
