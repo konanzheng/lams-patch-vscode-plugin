@@ -21,3 +21,12 @@ lams-path工具的vscode插件，通过命令窗口选择lams-path makePath 填�
 
 ## 使用前提是安装了lams-path工具 
 
+使用cargo 安装lams-path工具
+
+```cargo install lams-patch```
+
+或者下载后放到path路径下
+
+github下载地址
+https://github.com/konanzheng/lams-patch/releases
+
