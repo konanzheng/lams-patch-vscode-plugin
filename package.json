@@ -2,13 +2,13 @@
 	"name": "lams-patch",
 	"displayName": "lams-patch",
 	"description": "make patch from git history for maven web project",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"publisher": "ruizhaozheng",
 	"icon": "logo.png",
 	"author": {
 		"name": "郑瑞召",
-		"email": "ruizhaozheng@aliyun.com",
-		"url": "http://konanzheng.gitee.io/",
+		"email": "ruizhaozheng@outlook.com",
+		"url": "https://github.com/konanzheng",
 		"organization": "konanzheng"
 	},
 	"repository": {
@@ -32,7 +32,12 @@
 				"title": "make patch(生成补丁包)",
 				"category": "lams-patch",
 				"icon":"$(source-control-view-icon)"
-
+			}
+		],
+		"keybindings": [
+			{
+				"command": "lams-patch.makePatch",
+				"key": "ctrl+f11"
 			}
 		]
 	},
