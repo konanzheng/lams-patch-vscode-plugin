@@ -14,11 +14,11 @@ const TARGET = "/target/classes";
 // 路径转换
 function transform_path(src ) {
     let dest = src;
-    if (src.indexOf(WEBAPP) ===0){
+    if (src.indexOf(WEBAPP) >-1){
         dest = src.replace(WEBAPP, "");
-    } else if (src.indexOf(RESOURCES)===0) {
+    } else if (src.indexOf(RESOURCES)>-1) {
         dest = src.replace(RESOURCES, WEBINF);
-    } else if ( src.indexOf(JAVA)===0) {
+    } else if ( src.indexOf(JAVA)>-1) {
         dest = src.replace(JAVA, WEBINF).replace(".java", ".class");
     }
     // println!("路径转换前:{},转换后:{}",src,dest);
@@ -123,9 +123,9 @@ function doPatch (repostory,selectIds) {
 						}
 					}
 				})
+				vscode.window.showInformationMessage('补丁已生成！！');
 			}
 		})
-		vscode.window.showInformationMessage('补丁已生成！！');
 	})
 }
 async function delFile(opc,root,uri,dir){
@@ -168,7 +168,7 @@ async function delFile(opc,root,uri,dir){
 }
 async function copyFile(opc,root,uri,dir){
 	let split = uri.path.split(".")
-	let is_class = split[split.length-1]==='class'
+	let is_class = split[split.length-1]==='java'
 	let path =transform_path(uri.path.replace(root.path,''))
 	let target  = vscode.Uri.file( dir.path + path)
 	let source  = uri
@@ -180,8 +180,8 @@ async function copyFile(opc,root,uri,dir){
 		console.log('拷贝成功:'+source.path+'到'+target.path)
 		opc.appendLine('拷贝成功:'+source.path+'到'+target.path);
 	} catch (error) {
-		console.log('拷贝失败:'+source.path+'到'+target.path)
-		opc.appendLine('拷贝失败:'+source.path+'到'+target.path);
+		console.log('拷贝失败:'+source.path+'到'+target.path+'\n'+error);
+		opc.appendLine('拷贝失败:'+source.path+'到'+target.path+'\n'+error)
 	}
 	// 判断.class 结尾的要拷贝内部类文件
 	if(is_class){

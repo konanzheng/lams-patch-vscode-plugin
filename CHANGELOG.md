@@ -13,3 +13,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.5]
 完全使用vscode api 来计算git 版本差异和拷贝差异文件
+
+## [0.0.6]
+class文件拷贝bug修复，java编译成class文件存在多个都需要拷贝
