@@ -16,3 +16,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.6]
 class文件拷贝bug修复，java编译成class文件存在多个都需要拷贝
+
+## [0.0.7]
+自动拷贝前后台版本文件
+1. git.properties
+2. /vue/VERSION
+3. /vue/COMMITHASH

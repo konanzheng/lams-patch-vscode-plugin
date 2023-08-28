@@ -123,10 +123,30 @@ function doPatch (repostory,selectIds) {
 						}
 					}
 				})
+				versionFiles(opc,root,path[0])
 				vscode.window.showInformationMessage('补丁已生成！！');
 			}
 		})
 	})
+}
+
+function versionFiles(opc,root,dir){
+	try {
+		let files = ['/src/main/webapp/git.properties','/src/main/resources/vue/VERSION','/src/main/resources/vue/COMMITHASH']
+		files.forEach(f=>{
+			let source = vscode.Uri.file(root.path + f)
+			let target = vscode.Uri.file(dir.path + transform_path(f))
+			vscode.workspace.fs.copy(source,target,{overwrite:true}).then(()=>{
+				console.log('拷贝成功:'+source.path+'到'+target.path)
+				opc.appendLine('拷贝成功:'+source.path+'到'+target.path);
+			}).catch(error=>{
+				console.log('拷贝失败:'+source.path+'到'+target.path+'\n'+error);
+				opc.appendLine('拷贝失败:'+source.path+'到'+target.path+'\n'+error);
+			})
+		})
+	} catch (error) {
+		console.log('覆盖版本文件出错：'+error)
+	}
 }
 async function delFile(opc,root,uri,dir){
 	// console.log(root,uri,dir)
