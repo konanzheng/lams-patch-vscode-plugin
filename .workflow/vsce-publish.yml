@@ -1,0 +1,42 @@
+version: '1.0'
+name: pipeline-20230904
+displayName: vsce自动发布
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+        - ''
+    tags:
+      prefix:
+        - ''
+variables:
+  VSCE_TOKEN: guj5kyls7fxn3lvp5v6c7aahcy5yufjx2qldhmgo2znimtakltxa
+stages:
+  - name: stage-dfc32053
+    displayName: 安装依赖并构建发布
+    strategy: naturally
+    trigger: auto
+    executor:
+      - konanzheng
+    steps:
+      - step: build@nodejs
+        name: build_nodejs
+        displayName: Nodejs 构建
+        nodeVersion: 14.16.0
+        commands:
+          - '# 设置NPM源，提升安装速度'
+          - npm config set registry https://registry.npmmirror.com
+          - ''
+          - '# 执行编译命令'
+          - npm install && npm install -g vsce & vsce publish -p ${{VSCE_TOKEN}}
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ./dist
+        caches:
+          - ~/.npm
+          - ~/.yarn
+        notify: []
+        strategy:
+          retry: '0'
