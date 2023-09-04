@@ -29,7 +29,7 @@ stages:
           - npm config set registry https://registry.npmmirror.com
           - ''
           - '# 执行编译命令'
-          - npm install && npm install -g vsce & vsce publish -p ${{VSCE_TOKEN}}
+          - npm install && npm install -g vsce & vsce publish -p ${VSCE_TOKEN}
         artifacts:
           - name: BUILD_ARTIFACT
             path:
