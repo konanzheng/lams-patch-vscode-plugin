@@ -111,10 +111,14 @@ function doPatch (repostory,selectIds) {
 		opc.show(); // 打开控制台并切换到OutputChannel tab
 		repostory.diffBetween(selectIds[1],selectIds[0]).then((changes) => {
 			let root = repostory.rootUri
+			let pomFlag = false;
 			if(changes) {
 				changes.forEach(c=>{
 					console.log(c)
 					opc.appendLine(c.uri.path + '  ' + c.status);
+					if (c.uri.fsPath.indexOf('pom.xml') >0) {
+						pomFlag = true;
+					}
 					if (c.uri.fsPath.indexOf('src') !==0){
 						// MODIFIED  5 修改 ; DELETED  6 删除; UNTRACKED  7 新增; IGNORED  8 忽略; INTENT_TO_ADD  9 新增
 						delFile(opc,root,c.uri,path[0])
@@ -125,6 +129,11 @@ function doPatch (repostory,selectIds) {
 				})
 				versionFiles(opc,root,path[0])
 				vscode.window.showInformationMessage('补丁已生成！！');
+				if (pomFlag) {
+					opc.appendLine('检测到pom.xml变动，请尽量使用完整包，或者手动处理jar包依赖。')
+					vscode.window.showWarningMessage('检测到pom.xml变动，请尽量使用完整包，或者手动处理jar包依赖。');
+					
+				}
 			}
 		})
 	})

@@ -22,3 +22,6 @@ class文件拷贝bug修复，java编译成class文件存在多个都需要拷贝
 1. git.properties
 2. /vue/VERSION
 3. /vue/COMMITHASH
+
+## [0.0.8]
+pom.xml文件变化检测提示，建议使用完整war包或手动处理jar包依赖
