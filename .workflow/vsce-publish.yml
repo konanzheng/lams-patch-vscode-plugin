@@ -4,9 +4,6 @@ displayName: vsce自动发布
 triggers:
   trigger: auto
   push:
-    branches:
-      prefix:
-        - ''
     tags:
       prefix:
         - ''
@@ -30,7 +27,7 @@ stages:
           - ''
           - '# 执行编译命令'
           - npm install && npm install @vscode/vsce && 
-          - node .\node_modules\.store\vsce@2.15.0\node_modules\vsce\vsce publish -p ${VSCE_TOKEN}
+          - node ./node_modules/.store/vsce@2.15.0/node_modules/vsce/vsce publish -p ${VSCE_TOKEN}
         artifacts:
           - name: BUILD_ARTIFACT
             path:
