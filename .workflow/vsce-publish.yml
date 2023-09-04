@@ -28,10 +28,6 @@ stages:
           - '# 执行编译命令'
           - npm install
           - ./node_modules/.bin/vsce publish -p ${VSCE_TOKEN}
-        artifacts:
-          - name: BUILD_ARTIFACT
-            path:
-              - ./dist
         caches:
           - ~/.npm
           - ~/.yarn
