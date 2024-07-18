@@ -27,3 +27,6 @@ class文件拷贝bug修复，java编译成class文件存在多个都需要拷贝
 pom.xml文件变化检测提示，建议使用完整war包或手动处理jar包依赖
 ## [0.0.9]
 完善 license文件 和 workflow配置
+
+## [0.0.10]
+完善commitId选择列表显示

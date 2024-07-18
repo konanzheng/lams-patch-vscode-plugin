@@ -2,7 +2,7 @@
   "name": "lams-patch",
   "displayName": "lams-patch",
   "description": "make patch from git history for maven web project",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "ruizhaozheng",
   "icon": "logo.png",
   "author": {
