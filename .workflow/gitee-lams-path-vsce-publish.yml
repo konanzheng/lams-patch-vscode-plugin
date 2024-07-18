@@ -28,8 +28,8 @@ stages:
           - 'npm install '
           - npm install vsce
           - ./node_modules/.bin/vsce package
-          - '# 发布暂时注释掉了因为总是401'
-          - '#./node_modules/.bin/vsce publish -p ${VSCE_TOKEN}'
+          - '# 发布'
+          - ./node_modules/.bin/vsce publish -p ${VSCE_TOKEN}
         artifacts:
           - name: lams_patch_vsix
             path:
