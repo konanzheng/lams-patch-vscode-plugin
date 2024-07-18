@@ -27,7 +27,7 @@ stages:
           - '# 执行编译命令'
           - 'npm install '
           - npm install vsce
-          - vsce package
+          - ./node_modules/.bin/vsce package
           - '# 发布'
           - ./node_modules/.bin/vsce publish -p ${VSCE_TOKEN}
         artifacts:
