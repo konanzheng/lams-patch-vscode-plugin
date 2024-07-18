@@ -48,6 +48,8 @@ function activate(context) {
 					git.openRepository(wsf.uri).then(function (repository) {
 						if (repository) {
 							getLogs(repository);
+						} else {
+							vscode.window.showErrorMessage('未找到git仓库');
 						}
 					})
 				}
@@ -61,10 +63,11 @@ function getLogs(repository){
 		let selectIds =[];
 		let logs=[]
 		commit_logs.forEach(c => {
-			let label = c.message.split(/[\n]/)[0]
-			let description = 'commitID: '+ c.hash + ',message: ' +  c.message
+			console.log(c)
+			let description = "提交人和时间: "+c.authorName+"("+c.authorEmail+")" +  "  " + dateFormat(c.commitDate)
+			let label = 'hash: '+ c.hash
 			let hash = c.hash
-			let detail = c.message
+			let detail = "message: "+c.message
 			logs.push({ label,description,hash,detail})
 		})
 		showCommitSelection('可以通过hash或者message过滤',logs,function (option) {
@@ -89,6 +92,32 @@ function getLogs(repository){
 		})
 	});
 }
+function dateFormat (dateStr){
+	let date = new Date(dateStr);
+	var  year = date.getFullYear(); 
+	var  month =(date.getMonth() + 1).toString(); 
+	var  day = (date.getDate()).toString();  
+	if  (month.length == 1) { 
+		month =  "0"  + month; 
+	} 
+	if  (day.length == 1) { 
+		day =  "0"  + day; 
+	}
+	var hour = date.getHours().toString();
+	if  (hour.length == 1) { 
+		hour =  "0"  + hour; 
+	}
+	var  minute = date.getMinutes().toString();
+	if  (minute.length == 1) { 
+		minute =  "0"  + minute; 
+	}
+	var  second = date.getSeconds().toString();
+	if  (second.length == 1) { 
+		second =  "0"  + second; 
+	}
+	var  dateTime = year +  "-"  + month +  "-"  + day +  " " + hour + ":" + minute+":"+second;
+	return  dateTime; 
+ }
 function showCommitSelection(placeHolder,commitIds,callback) {
 	vscode.window.showQuickPick(commitIds, {
 		placeHolder: placeHolder,
