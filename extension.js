@@ -151,6 +151,12 @@ function doPatch (repostory,selectIds) {
 					if (c.uri.fsPath.indexOf('src') !==0){
 						// MODIFIED  5 修改 ; DELETED  6 删除; UNTRACKED  7 新增; IGNORED  8 忽略; INTENT_TO_ADD  9 新增
 						delFile(opc,root,c.uri,path[0])
+					}
+				})
+				changes.forEach(c=>{
+					
+					if (c.uri.fsPath.indexOf('src') !==0){
+						// MODIFIED  5 修改 ; DELETED  6 删除; UNTRACKED  7 新增; IGNORED  8 忽略; INTENT_TO_ADD  9 新增
 						if (c.status!=6) {
 							copyFile(opc,root,c.uri,path[0])
 						}
@@ -195,33 +201,36 @@ async function delFile(opc,root,uri,dir){
 		await vscode.workspace.fs.delete(del);
 		console.log('已删除:'+path)
 		opc.appendLine('已删除:'+path);
-	} catch (error) {
-		console.log("删除文件不存在："+del.path)
-		opc.appendLine('已删除:'+path);
-	}
-	// // 判断.class 结尾的要删除内部类文件
-	if(split[split.length-1]==='class'){
-		let parent = vscode.Uri.joinPath(del,'..')
-		try{
-			let r = await vscode.workspace.fs.readDirectory(parent);
-			if(r && r.length>0){
-				for(var i=0;i<r.length;i++){
-					let split = r[i][0].split('\$')
-					if(r[i][1] == 1 && del.path.indexOf(split[0]+'.class')>0){
-						let del_class = vscode.Uri.joinPath(parent,'/'+r[i][0])
-						try {
-							await vscode.workspace.fs.delete(del_class);
-							opc.appendLine('已删除:'+del_class.path);
-						} catch (error) {
-							opc.appendLine("文件不存在："+del_class.path);
+		// // 判断.class 结尾的要删除内部类文件
+		if(split[split.length-1]==='class'){
+			let parent = vscode.Uri.joinPath(del,'..')
+			opc.appendLine('删除class内部类文件:' + parent.path)
+			try{
+				let r = await vscode.workspace.fs.readDirectory(parent);
+				if(r && r.length>0){
+					for(var i=0;i<r.length;i++){
+						let split = r[i][0].split('\$')
+						if(r[i][1] == 1 && del.path.indexOf(split[0]+'.class')>0){
+							let del_class = vscode.Uri.joinPath(parent,'/'+r[i][0])
+							if(del_class.path !== del.path){
+								try {
+									await vscode.workspace.fs.delete(del_class);
+									opc.appendLine('已删除:'+del_class.path);
+								} catch (error) {
+									opc.appendLine("文件不存在："+del_class.path);
+								}
+							}
 						}
 					}
 				}
+			}catch(error){
+				console.log('目录不存在:'+parent.path)
+				opc.appendLine('目录不存在:'+parent.path);
 			}
-		}catch(error){
-			console.log('目录不存在:'+parent.path)
-			opc.appendLine('目录不存在:'+parent.path);
 		}
+	} catch (error) {
+		console.log("删除文件不存在："+del.path)
+		opc.appendLine('删除文件不存在：'+del.path);
 	}
 }
 async function copyFile(opc,root,uri,dir){
@@ -233,13 +242,27 @@ async function copyFile(opc,root,uri,dir){
 	if(is_class){
 		source = vscode.Uri.file(root.path + path.replace(WEBINF, TARGET))
 	}
+	let success = false;
 	try {
 		await vscode.workspace.fs.copy(source,target,{overwrite:true});
 		console.log('拷贝成功:'+source.path+'到'+target.path)
 		opc.appendLine('拷贝成功:'+source.path+'到'+target.path);
+		success = true;
 	} catch (error) {
 		console.log('拷贝失败:'+source.path+'到'+target.path+'\n'+error);
 		opc.appendLine('拷贝失败:'+source.path+'到'+target.path+'\n'+error)
+	}
+	if(!success){
+		// 拷贝失败时进行二次尝试
+		try {
+			await vscode.workspace.fs.copy(source,target,{overwrite:true});
+			console.log('第二次拷贝成功:'+source.path+'到'+target.path)
+			opc.appendLine('第二次拷贝成功:'+source.path+'到'+target.path);
+			success = true;
+		} catch (error) {
+			console.log('第二次拷贝失败:'+source.path+'到'+target.path+'\n'+error);
+			opc.appendLine('第二次拷贝失败:'+source.path+'到'+target.path+'\n'+error)
+		}
 	}
 	// 判断.class 结尾的要拷贝内部类文件
 	if(is_class){
@@ -257,8 +280,8 @@ async function copyFile(opc,root,uri,dir){
 							console.log('拷贝成功:'+from.path+'到'+to.path)
 							opc.appendLine('拷贝成功:'+from.path+'到'+to.path);
 						} catch (error) {
-							console.log('拷贝失败:'+from.path+'到'+to.path)
-							opc.appendLine('拷贝失败:'+from.path+'到'+to.path);
+							console.log('拷贝失败:'+from.path+'到'+to.path+'\n'+error);
+							opc.appendLine('拷贝失败:'+from.path+'到'+to.path+'\n'+error);
 						}
 					}
 				}
