@@ -1,6 +1,6 @@
-# lams-patch README
+# lams-patch README 
 
-lams-path工具的vscode插件，通过命令窗口选择lams-path makePath 选择commitId和生成补丁的目录即可
+用于生成代码补丁包的vscode插件，通过命令窗口选择**lams-patch: makePath** 选择commitId和生成补丁的目录即可
 
 ## Features
 
